@@ -3,7 +3,8 @@
   "displayName": "Join Roblox Game",
   "description": "Link a workspace to a Roblox game and be able to join through Visual Studio Code.",
   "publisher": "CriShoux",
-  "version": "0.0.6",
+  "icon": "Logo.png",
+  "version": "0.0.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/ShouxTech/join-roblox-game.git"
