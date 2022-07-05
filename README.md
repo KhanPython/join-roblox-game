@@ -1,6 +1,6 @@
 # join-roblox-game
 
-Link your workspace to a Roblox game and be able to join through Visual Studio Code.
+Link a workspace to a Roblox game and be able to join through Visual Studio Code.
 
 ## Instructions
 
