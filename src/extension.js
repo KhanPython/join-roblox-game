@@ -5,7 +5,7 @@ const COMMAND_ID = 'join-roblox-game.joinGame';
 
 function activate(context) {
 	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, () => {
-		vscode.workspace.findFiles('place.json').then(files => {
+		vscode.workspace.findFiles('place.json').then((files) => {
 			if (files.length === 0) {
 				vscode.window.showErrorMessage('Could not find place.json');
 				return;
@@ -48,12 +48,27 @@ function activate(context) {
 		});
 	}));
 
+	async function isLuaWorkspace() {
+		const files = await vscode.workspace.findFiles('**/*.lua');
+		return files.length > 0;
+	}
+	
 	const joinGameStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -100);
 	joinGameStatusBarItem.command = COMMAND_ID;
 	joinGameStatusBarItem.text = '$(play-circle) Join Game';
 	joinGameStatusBarItem.tooltip = 'Join Game';
-	joinGameStatusBarItem.show();
 	context.subscriptions.push(joinGameStatusBarItem);
+
+	async function check() {
+		if (await isLuaWorkspace()) {
+			joinGameStatusBarItem.show();
+		} else {
+			joinGameStatusBarItem.hide();
+		}
+	}
+
+	check();
+	context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(check));
 }
 
 function deactivate() {}
