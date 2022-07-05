@@ -4,7 +4,7 @@
   "description": "Link a workspace to a Roblox game and be able to join through Visual Studio Code.",
   "publisher": "CriShoux",
   "icon": "Logo.png",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ShouxTech/join-roblox-game.git"
@@ -16,7 +16,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -40,7 +40,11 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "node ./test/runTest.js"
+    "test": "node ./test/runTest.js",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.js --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -48,6 +52,7 @@
     "@types/node": "16.x",
     "@types/vscode": "^1.68.0",
     "@vscode/test-electron": "^2.1.5",
+    "esbuild": "^0.14.48",
     "eslint": "^8.18.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
