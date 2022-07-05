@@ -3,54 +3,53 @@ const joinGame = require('./join-game');
 
 const COMMAND_ID = 'join-roblox-game.joinGame';
 
+async function getFile(path) {
+	const files = await vscode.workspace.findFiles(path);
+	if (files.length === 0) return;
+	return files[0];
+}
+
 function activate(context) {
-	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, () => {
-		vscode.workspace.findFiles('place.json').then((files) => {
-			if (files.length === 0) {
-				vscode.window.showErrorMessage('Could not find place.json');
-				return;
-			}
+	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {
+		const placeFile = await getFile('**/place.json');
+		if (!placeFile) {
+			return vscode.window.showErrorMessage('Could not find place.json');
+		}
 
-			vscode.workspace.openTextDocument(files[0]).then(async (doc) => {
-				const contents = doc.getText();
+		const doc = await vscode.workspace.openTextDocument(placeFile);
+		const contents = doc.getText();
 
-				let json;
-				try {
-					json = JSON.parse(contents);
-				} catch (err) {
-					vscode.window.showErrorMessage('Could not parse place.json');
-				}
+		let json;
+		try {
+			json = JSON.parse(contents);
+		} catch (err) {
+			return vscode.window.showErrorMessage('Could not parse place.json');
+		}
 
-				const placeId = json.placeId;
-				if (!placeId) {
-					vscode.window.showErrorMessage('Could not find placeId in place.json');
-					return;
-				}
-				if (isNaN(placeId)) {
-					vscode.window.showErrorMessage('placeId is not a number');
-					return;
-				}
+		const placeId = json.placeId;
+		if (!placeId) {
+			return vscode.window.showErrorMessage('Could not find placeId in place.json');
+		}
+		if (isNaN(placeId)) {
+			return vscode.window.showErrorMessage('placeId is not a number');
+		}
 
-				const cookie = vscode.workspace.getConfiguration('join-roblox-game').get('cookie');
-				if (!cookie || cookie.length === 0) {
-					vscode.window.showErrorMessage('Cookie has not been set');
-					return;
-				}
+		const cookie = vscode.workspace.getConfiguration('join-roblox-game').get('cookie');
+		if (!cookie || cookie.length === 0) {
+			return vscode.window.showErrorMessage('Cookie has not been set');
+		}
 
-				vscode.window.showInformationMessage('Joining game...');
+		vscode.window.showInformationMessage('Joining game...');
 
-				try {
-					await joinGame(cookie, placeId);
-				} catch (err) {
-					vscode.window.showErrorMessage(err.message);
-				}
-			});
-		});
+		try {
+			await joinGame(cookie, placeId);
+		} catch (err) {
+			return vscode.window.showErrorMessage(err.message);
+		}
 	}));
 
 	async function isLuaWorkspace() {
-		const files = await vscode.workspace.findFiles('**/*.lua');
-		return files.length > 0;
+		return await getFile('**/*.lua');
 	}
 	
 	const joinGameStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, -100);
@@ -59,7 +58,7 @@ function activate(context) {
 	joinGameStatusBarItem.tooltip = 'Join Game';
 	context.subscriptions.push(joinGameStatusBarItem);
 
-	async function check() {
+	async function updateButtonVisibility() {
 		if (await isLuaWorkspace()) {
 			joinGameStatusBarItem.show();
 		} else {
@@ -67,8 +66,11 @@ function activate(context) {
 		}
 	}
 
-	check();
-	context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(check));
+	updateButtonVisibility();
+	context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(updateButtonVisibility));
+	context.subscriptions.push(vscode.workspace.onDidCreateFiles(updateButtonVisibility));
+	context.subscriptions.push(vscode.workspace.onDidRenameFiles(updateButtonVisibility));
+	context.subscriptions.push(vscode.workspace.onDidDeleteFiles(updateButtonVisibility));
 }
 
 function deactivate() {}
