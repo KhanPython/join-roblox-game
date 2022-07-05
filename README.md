@@ -12,5 +12,4 @@ Click `Join Game` on the bottom left of the status bar.
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `joins-roblox-game.cookie`: set to the cookie of the desired account to join games with
