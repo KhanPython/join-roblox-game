@@ -1,0 +1,55 @@
+{
+  "name": "join-roblox-game",
+  "displayName": "Join Roblox Game",
+  "description": "Link a workspace to a Roblox game and be able to join through Visual Studio Code.",
+  "publisher": "CriShoux",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.68.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "join-roblox-game.joinGame",
+        "title": "Join Game"
+      }
+    ],
+    "configuration": {
+      "title": "Join Roblox Game",
+      "properties": {
+        "join-roblox-game.cookie": {
+          "type": "string",
+          "default": "",
+          "description": "The Roblox account cookie to use for joining games."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.68.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.18.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.6",
+    "open": "^8.4.0"
+  }
+}
