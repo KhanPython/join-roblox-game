@@ -1,5 +1,5 @@
 const open = require('open');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('node-fetch');
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
