@@ -30,7 +30,7 @@
         "title": "Roblox: Create `place.json`"
       },
       {
-        "command": "join-roblox-game.setSecurityCommand",
+        "command": "join-roblox-game.setSecurityCookie",
         "title": "Roblox: Set security cookie"
       }
     ],
