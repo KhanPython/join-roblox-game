@@ -1,6 +1,6 @@
 {
   "name": "join-roblox-game-fork",
-  "displayName": "Join Roblox Game (Fork)",
+  "displayName": "Join Roblox Game (Modified)",
   "description": "Link a workspace to a Roblox game and be able to join through Visual Studio Code.",
   "publisher": "KhanPython",
   "icon": "Logo.png",
