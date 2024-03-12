@@ -32,9 +32,18 @@ async function createPlaceJsonFile() {
     });
 }
 
+async function saveSecurityCookie(cookie) {
+    await vscode.secrets.store('securityCookie', cookie);
+    vscode.window.showInformationMessage('Security cookie stored securely.');
+}
+
+async function getSecurityCookie() {
+    return await vscode.secrets.get('securityCookie');
+}
+
 async function promptAndSaveSecurityCookie() {
     const cookie = await vscode.window.showInputBox({
-        prompt: 'Enter your Roblox security cookie',
+        prompt: 'Enter your security cookie',
         password: true // Conceals the input
     });
 
@@ -42,14 +51,6 @@ async function promptAndSaveSecurityCookie() {
         await saveSecurityCookie(cookie);
     }
 }
-
-async function saveSecurityCookie(cookie) {
-    const secretStorage = vscode.secrets;
-
-    await secretStorage.store('securityCookie', cookie);
-    vscode.window.showInformationMessage('Security cookie stored securely.');
-}
-
 
 function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand(SET_COOKIE_COMMAND, promptAndSaveSecurityCookie));
@@ -83,8 +84,7 @@ function activate(context) {
         }
     
         // Retrieve the cookie
-        const secretStorage = vscode.secrets;
-        const cookie = await secretStorage.get('securityCookie');
+        const cookie = getSecurityCookie();
         if (!cookie) {
             promptAndSaveSecurityCookie()
             return vscode.window.showErrorMessage('Security cookie has not been set. Please set it through the extension command.');
