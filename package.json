@@ -24,8 +24,22 @@
       {
         "command": "join-roblox-game.joinGame",
         "title": "Join Game"
+      },
+      {
+        "command": "join-roblox-game.createPlaceJSON",
+        "title": "Create `place.json`"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Add `place.json` to `.gitignore`",
+      "properties": {
+          "myExtension.addPlaceJsonToGitignore": {
+              "type": "boolean",
+              "default": true,
+              "description": "Automatically adds `place.json` to `.gitignore`"
+          }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",
