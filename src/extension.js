@@ -52,7 +52,6 @@ async function promptAndSaveSecurityCookie(context) {
         prompt: 'Enter your security cookie',
         password: true // Conceals the input
     });
-    console.log("User token", cookie);
 
     if (cookie) {
         await saveSecurityCookie(context, cookie);
@@ -98,7 +97,8 @@ function activate(context) {
         }
     
         vscode.window.showInformationMessage('Joining game...');
-    
+        console.debug(cookie)
+
         try {
             await joinGame(cookie, placeId);
         } catch (err) {

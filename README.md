@@ -6,19 +6,14 @@ Speed up your live-experience testing with the **Join-Roblox-Game** extension fo
 ## Quick Setup
 
 1. **Configure the `place.json` File**:
-   - Create a file named `place.json` within your workspace.
-   - Populate it with the `placeId` of your Roblox game and your Roblox account's `cookie` for authentication.
+   - Create or generate a file named `place.json` within your workspace.
+   - Set `placeId` of your Roblox game.
 
     ```json
     {
       "placeId": "your-game-id-here",
-      "cookie": "your-roblox-cookie-here"
     }
     ```
 2. **Join Your Game**:
    - Make sure your workspace contains Lua files to activate the extension's functionality.
-   - Click the `Join Game` button on the bottom left of the status bar to start your Roblox game.
-
-
-## Ensuring Your Security 
-Storing sensitive information, like your Roblox cookie, requires careful handling. It is highly adviced to exclude `place.json` from your version control. This can be done by adding `place.json` to your `.gitignore` file.
+   - Click the `Join Game` button on the bottom left of the status bar to start your Roblox game. This will ask to insert your Roblox security cookie for authentication.
