@@ -8,6 +8,7 @@ const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
 const CREATE_PLACE_JSON_COMMAND = `${BASE_COMMAND}.createPlaceJSON`;
 const SET_COOKIE_COMMAND = `${BASE_COMMAND}.setSecurityCookie`;
 
+
 async function getFile(pathToFile) {
     const files = await vscode.workspace.findFiles(pathToFile);
     if (files.length === 0) return;
@@ -32,28 +33,22 @@ async function createPlaceJsonFile() {
     });
 }
 
-async function saveSecurityCookie(cookie) {
-    await vscode.secrets.store('securityCookie', cookie);
-    vscode.window.showInformationMessage('Security cookie stored securely.');
-}
+async function getOrSetCookie() {
+    const secrets = context.secrets;
 
-async function getSecurityCookie() {
-    return await vscode.secrets.get('securityCookie');
-}
-
-async function promptAndSaveSecurityCookie() {
-    const cookie = await vscode.window.showInputBox({
-        prompt: 'Enter your security cookie',
-        password: true // Conceals the input
-    });
-
-    if (cookie) {
-        await saveSecurityCookie(cookie);
+    let userToken = await secrets.get('securityCookie');
+    if (!userToken) {
+        userToken = await vscode.window.showInputBox({ title: 'Enter your Roblox security cookie', password: true });
+        await secrets.store('securityCookie', userToken);
+        vscode.window.showInformationMessage('Security cookie stored securely.');
     }
+
+    console.log("User token", userToken);
+    return userToken
 }
 
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand(SET_COOKIE_COMMAND, promptAndSaveSecurityCookie));
+    context.subscriptions.push(vscode.commands.registerCommand(SET_COOKIE_COMMAND, getOrSetCookie));
 
     context.subscriptions.push(vscode.commands.registerCommand(CREATE_PLACE_JSON_COMMAND, async () => {
         createPlaceJsonFile();
@@ -84,11 +79,7 @@ function activate(context) {
         }
     
         // Retrieve the cookie
-        const cookie = getSecurityCookie();
-        if (!cookie) {
-            promptAndSaveSecurityCookie()
-            return vscode.window.showErrorMessage('Security cookie has not been set. Please set it through the extension command.');
-        }
+        const cookie = getOrSetCookie();
     
         vscode.window.showInformationMessage('Joining game...');
     
