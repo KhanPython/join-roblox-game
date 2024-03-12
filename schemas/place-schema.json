@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "title": "Place Configuration",
-    "required": ["placeId", "cookie"],
+    "required": ["placeId"],
     "properties": {
       "placeId": {
         "type": "string",
