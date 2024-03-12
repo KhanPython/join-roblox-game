@@ -4,7 +4,7 @@
   "description": "Link a workspace to a Roblox game and be able to join through Visual Studio Code.",
   "publisher": "KhanPython",
   "icon": "Logo.png",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/KhanPython/join-roblox-game"
@@ -33,11 +33,11 @@
     "configuration": {
       "title": "Add `place.json` to `.gitignore`",
       "properties": {
-          "myExtension.addPlaceJsonToGitignore": {
-              "type": "boolean",
-              "default": true,
-              "description": "Automatically adds `place.json` to `.gitignore`"
-          }
+        "myExtension.addPlaceJsonToGitignore": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically adds `place.json` to `.gitignore`"
+        }
       }
     }
   },
