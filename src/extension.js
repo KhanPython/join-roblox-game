@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE_COMMAND = 'join-roblox-game';
-const COMMAND_ID = `${BASE_COMMAND}.joinGame`;
-const CREATE_PLACE_JSON = `${BASE_COMMAND}.createPlaceJSON`;
+const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
+const CREATE_PLACE_JSON_COMMAND = `${BASE_COMMAND}.createPlaceJSON`;
 
 async function getFile(pathToFile) {
     const files = await vscode.workspace.findFiles(pathToFile);
@@ -46,7 +46,7 @@ async function addToGitignore() {
 }
 
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand(CREATE_PLACE_JSON, async () => {
+    context.subscriptions.push(vscode.commands.registerCommand(CREATE_PLACE_JSON_COMMAND, async () => {
         createPlaceJsonFile();
 
         const shouldAddToGitignore = vscode.workspace.getConfiguration().get('myExtension.addPlaceJsonToGitignore');
@@ -55,7 +55,7 @@ function activate(context) {
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {
+    context.subscriptions.push(vscode.commands.registerCommand(JOIN_COMMAND, async () => {
         const placeFile = await getFile('**/place.json');
         if (!placeFile) {
             return vscode.window.showErrorMessage('Could not find place.json');
