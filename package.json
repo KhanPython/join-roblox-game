@@ -28,18 +28,12 @@
       {
         "command": "join-roblox-game.createPlaceJSON",
         "title": "Roblox: Create `place.json`"
+      },
+      {
+        "command": "join-roblox-game.setSecurityCommand",
+        "title": "Roblox: Set security cookie"
       }
     ],
-    "configuration": {
-      "title": "Add `place.json` to `.gitignore`",
-      "properties": {
-        "myExtension.addPlaceJsonToGitignore": {
-          "type": "boolean",
-          "default": true,
-          "description": "Automatically adds `place.json` to `.gitignore`"
-        }
-      }
-    },
     "jsonValidation": [
       {
         "fileMatch": "/place.json",
