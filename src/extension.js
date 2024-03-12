@@ -97,8 +97,8 @@ function activate(context) {
         }
     
         vscode.window.showInformationMessage('Joining game...');
-        console.debug(cookie)
-
+        vscode.window.showErrorMessage(cookie)
+        
         try {
             await joinGame(cookie, placeId);
         } catch (err) {
