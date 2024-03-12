@@ -39,7 +39,8 @@
         "fileMatch": "/place.json",
         "url": "./schemas/place-schema.json"
       }
-    ]
+    ],
+    "permissions": ["secrets"]
   },
   "scripts": {
     "lint": "eslint .",
