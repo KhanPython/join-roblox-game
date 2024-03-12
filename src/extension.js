@@ -2,12 +2,14 @@ const vscode = require('vscode');
 const joinGame = require('./join-game');
 const fs = require('fs');
 const path = require('path');
+const context = vscode.context;
 
 const BASE_COMMAND = 'join-roblox-game';
 const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
 const CREATE_PLACE_JSON_COMMAND = `${BASE_COMMAND}.createPlaceJSON`;
 const SET_COOKIE_COMMAND = `${BASE_COMMAND}.setSecurityCookie`;
 
+const SECURITY_COOKE_STRING = "RobloxSecurityCookie"
 
 async function getFile(pathToFile) {
     const files = await vscode.workspace.findFiles(pathToFile);
@@ -33,22 +35,41 @@ async function createPlaceJsonFile() {
     });
 }
 
-async function getOrSetCookie() {
+async function saveSecurityCookie(cookie) {
     const secrets = context.secrets;
 
-    let userToken = await secrets.get('securityCookie');
+    await secrets.store(SECURITY_COOKE_STRING, cookie);
+    vscode.window.showInformationMessage('Security cookie stored securely.');
+}
+
+async function getSecurityCookie() {
+    const secrets = context.secrets;
+
+    return await secrets.get(SECURITY_COOKE_STRING);
+}
+
+async function promptAndSaveSecurityCookie() {
+    const secrets = context.secrets;
+
+    let userToken = await secrets.get(SECURITY_COOKE_STRING);
     if (!userToken) {
         userToken = await vscode.window.showInputBox({ title: 'Enter your Roblox security cookie', password: true });
-        await secrets.store('securityCookie', userToken);
-        vscode.window.showInformationMessage('Security cookie stored securely.');
     }
-
     console.log("User token", userToken);
-    return userToken
+
+
+    const cookie = await vscode.window.showInputBox({
+        prompt: 'Enter your security cookie',
+        password: true // Conceals the input
+    });
+
+    if (cookie) {
+        await saveSecurityCookie(cookie);
+    }
 }
 
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand(SET_COOKIE_COMMAND, getOrSetCookie));
+    context.subscriptions.push(vscode.commands.registerCommand(SET_COOKIE_COMMAND, promptAndSaveSecurityCookie));
 
     context.subscriptions.push(vscode.commands.registerCommand(CREATE_PLACE_JSON_COMMAND, async () => {
         createPlaceJsonFile();
@@ -79,7 +100,11 @@ function activate(context) {
         }
     
         // Retrieve the cookie
-        const cookie = getOrSetCookie();
+        const cookie = getSecurityCookie();
+        if (!cookie) {
+            promptAndSaveSecurityCookie()
+            return vscode.window.showErrorMessage('Security cookie has not been set. Please set it through the extension command.');
+        }
     
         vscode.window.showInformationMessage('Joining game...');
     
