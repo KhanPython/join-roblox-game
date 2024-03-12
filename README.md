@@ -1,16 +1,24 @@
-# join-roblox-game
+# Join-Roblox-Game Extension for VSCode
 
-Link a workspace to a Roblox game and be able to join through Visual Studio Code.
+Speed up your live-experience testing with the **Join-Roblox-Game** extension for Visual Studio Code. This tool enables you to directly link your workspace with a Roblox game, offering a streamlined path to jump from code to gameplay within a single click.
 
-## Instructions
 
-Set your cookie using the cookie setting.  
-Create a file called `place.json` in your workspace folder.  
-Click `Join Game` on the bottom left of the status bar.  
-Your workspace must have Lua files in it to be registered by the extension.
+## Quick Setup
 
-## Extension Settings
+1. **Configure the `place.json` File**:
+   - Create a file named `place.json` within your workspace.
+   - Populate it with the `placeId` of your Roblox game and your Roblox account's `cookie` for authentication.
 
-This extension contributes the following settings:
+    ```json
+    {
+      "placeId": "your-game-id-here",
+      "cookie": "your-roblox-cookie-here"
+    }
+    ```
+2. **Join Your Game**:
+   - Make sure your workspace contains Lua files to activate the extension's functionality.
+   - Click the `Join Game` button on the bottom left of the status bar to start your Roblox game.
 
-* `joins-roblox-game.cookie`: set to the cookie of the desired account to join games with
+
+## Ensuring Your Security 
+Storing sensitive information, like your Roblox cookie, requires careful handling. It is highly adviced to exclude `place.json` from your version control. This can be done by adding `place.json` to your `.gitignore` file.
