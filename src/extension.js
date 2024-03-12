@@ -90,7 +90,7 @@ function activate(context) {
         }
     
         // Retrieve the cookie
-        const cookie = getSecurityCookie(context);
+        const cookie = await getSecurityCookie(context);
         if (!cookie) {
             promptAndSaveSecurityCookie(context)
             return vscode.window.showErrorMessage('Security cookie has not been set. Please set it through the extension command.');
@@ -98,7 +98,7 @@ function activate(context) {
     
         vscode.window.showInformationMessage('Joining game...');
         vscode.window.showErrorMessage(cookie)
-        
+
         try {
             await joinGame(cookie, placeId);
         } catch (err) {
