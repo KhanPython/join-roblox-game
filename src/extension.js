@@ -2,6 +2,9 @@ const vscode = require('vscode');
 const joinGame = require('./join-game');
 const fs = require('fs');
 const path = require('path');
+const Ajv = require('ajv');
+
+const placeSchema = require('./schemas/place-schema.json');
 
 const BASE_COMMAND = 'join-roblox-game';
 const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
@@ -73,21 +76,25 @@ function activate(context) {
     
         const doc = await vscode.workspace.openTextDocument(placeFile);
         const contents = doc.getText();
-    
+
         let json;
         try {
             json = JSON.parse(contents);
         } catch (err) {
             return vscode.window.showErrorMessage('Could not parse place.json');
         }
-    
+
+        // Compile the schema
+        const ajv = new Ajv();
+        const validate = ajv.compile(placeSchema);
+
+        if (!validate(json)) {
+            // If the data is invalid, show an error message with validation errors
+            vscode.window.showErrorMessage('place.json is invalid: ' + ajv.errorsText(validate.errors));
+            return;
+        }
+
         const placeId = json.placeId;
-        if (!placeId) {
-            return vscode.window.showErrorMessage('Could not find placeId in place.json');
-        }
-        if (isNaN(placeId)) {
-            return vscode.window.showErrorMessage('placeId is not a number');
-        }
     
         // Retrieve the cookie
         const cookie = await getSecurityCookie(context);
