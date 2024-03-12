@@ -1,15 +1,60 @@
 const vscode = require('vscode');
 const joinGame = require('./join-game');
+const fs = require('fs');
+const path = require('path');
 
-const COMMAND_ID = 'join-roblox-game.joinGame';
+const BASE_COMMAND = 'join-roblox-game';
+const COMMAND_ID = `${BASE_COMMAND}.joinGame`;
+const CREATE_PLACE_JSON = `${BASE_COMMAND}.createPlaceJSON`;
 
-async function getFile(path) {
-    const files = await vscode.workspace.findFiles(path);
+async function getFile(pathToFile) {
+    const files = await vscode.workspace.findFiles(pathToFile);
     if (files.length === 0) return;
     return files[0];
 }
 
+async function createPlaceJsonFile() {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders) return; // No open workspace
+
+    const placeJsonPath = path.join(workspaceFolders[0].uri.fsPath, 'place.json');
+    const placeJsonContent = {
+        placeId: "yourPlaceIdHere",
+        cookie: "yourCookieHere"
+    };
+
+    fs.writeFile(placeJsonPath, JSON.stringify(placeJsonContent, null, 2), (err) => {
+        if (err) {
+            vscode.window.showErrorMessage('Failed to create `place.json`');
+            return console.error(err);
+        }
+        vscode.window.showInformationMessage('`place.json` created successfully.');
+    });
+}
+
+async function addToGitignore() {
+    const gitignoreFile = await getFile('**/.gitignore');
+    if (!gitignoreFile) {
+        return vscode.window.showErrorMessage('.gitignore not found! Extension will function as intended. However It is adviced that you proceed with caution, as publishing the `place.json` will expose your Security Cookie');
+    }
+
+    const doc = await vscode.workspace.openTextDocument(gitignoreFile);
+    const edit = new vscode.WorkspaceEdit();
+    edit.insert(gitignoreFile, new vscode.Position(doc.lineCount, 0), '\nplace.json\n');
+    await vscode.workspace.applyEdit(edit);
+    await doc.save();
+}
+
 function activate(context) {
+    context.subscriptions.push(vscode.commands.registerCommand(CREATE_PLACE_JSON, async () => {
+        createPlaceJsonFile();
+
+        const shouldAddToGitignore = vscode.workspace.getConfiguration().get('myExtension.addPlaceJsonToGitignore');
+        if (shouldAddToGitignore) {
+            addToGitignore();
+        }
+    }));
+
     context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {
         const placeFile = await getFile('**/place.json');
         if (!placeFile) {
