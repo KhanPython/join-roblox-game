@@ -33,14 +33,22 @@ async function createPlaceJsonFile() {
 }
 
 async function addToGitignore() {
-    const gitignoreFile = await getFile('**/.gitignore');
-    if (!gitignoreFile) {
-        return vscode.window.showErrorMessage('.gitignore not found! Extension will function as intended. However It is adviced that you proceed with caution, as publishing the `place.json` will expose your Security Cookie');
+    const gitignoreFiles = await vscode.workspace.findFiles('**/.gitignore', '**/node_modules/**', 1);
+    if (gitignoreFiles.length === 0) {
+        return vscode.window.showErrorMessage('.gitignore not found! Extension will function as intended. However, it is advised that you proceed with caution, as publishing the `place.json` will expose your Security Cookie.');
     }
 
+    const gitignoreFile = gitignoreFiles[0];
     const doc = await vscode.workspace.openTextDocument(gitignoreFile);
+    const content = doc.getText();
+
+    if (content.includes('place.json')) {
+        return;
+    }
+
     const edit = new vscode.WorkspaceEdit();
-    edit.insert(gitignoreFile, new vscode.Position(doc.lineCount, 0), '\nplace.json\n');
+    const ending = content.endsWith('\n') ? '' : '\n';
+    edit.insert(gitignoreFile, new vscode.Position(doc.lineCount, 0), `${ending}place.json\n`);
     await vscode.workspace.applyEdit(edit);
     await doc.save();
 }
