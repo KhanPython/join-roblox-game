@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const Ajv = require('ajv');
 
-const placeSchema = require('./schemas/place-schema.json');
+const placeSchema = require('../schemas/place-schema.json');
 
 const BASE_COMMAND = 'join-roblox-game';
 const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
