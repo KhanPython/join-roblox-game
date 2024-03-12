@@ -7,10 +7,6 @@
       "placeId": {
         "type": "string",
         "description": "The unique identifier for the place"
-      },
-      "cookie": {
-        "type": "string",
-        "description": "A secret cookie for authentication purposes"
       }
     }
 }
