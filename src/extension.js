@@ -8,7 +8,7 @@ const JOIN_COMMAND = `${BASE_COMMAND}.joinGame`;
 const CREATE_PLACE_JSON_COMMAND = `${BASE_COMMAND}.createPlaceJSON`;
 const SET_COOKIE_COMMAND = `${BASE_COMMAND}.setSecurityCookie`;
 
-const SECURITY_COOKE_STRING = "RobloxSecurityCookie"
+const SECURITY_COOKIE_STRING = "RobloxSecurityCookie"
 
 async function getFile(pathToFile) {
     const files = await vscode.workspace.findFiles(pathToFile);
@@ -37,14 +37,14 @@ async function createPlaceJsonFile() {
 async function saveSecurityCookie(context, cookie) {
     const secrets = context.secrets;
 
-    await secrets.store(SECURITY_COOKE_STRING, cookie);
+    await secrets.store(SECURITY_COOKIE_STRING, cookie);
     vscode.window.showInformationMessage('Security cookie stored securely.');
 }
 
 async function getSecurityCookie(context) {
     const secrets = context.secrets;
 
-    return await secrets.get(SECURITY_COOKE_STRING);
+    return await secrets.get(SECURITY_COOKIE_STRING);
 }
 
 async function promptAndSaveSecurityCookie(context) {
