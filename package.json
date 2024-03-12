@@ -39,9 +39,9 @@
         "fileMatch": "/place.json",
         "url": "./schemas/place-schema.json"
       }
-    ],
-    "permissions": ["secrets"]
+    ]
   },
+  "permissions": ["secrets"],
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
