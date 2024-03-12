@@ -44,7 +44,8 @@ async function promptAndSaveSecurityCookie() {
 }
 
 async function saveSecurityCookie(cookie) {
-    const secretStorage = vscode.secrets.getSecretStorage();
+    const secretStorage = vscode.secrets;
+
     await secretStorage.store('securityCookie', cookie);
     vscode.window.showInformationMessage('Security cookie stored securely.');
 }
@@ -82,7 +83,7 @@ function activate(context) {
         }
     
         // Retrieve the cookie
-        const secretStorage = vscode.secrets.getSecretStorage();
+        const secretStorage = vscode.secrets;
         const cookie = await secretStorage.get('securityCookie');
         if (!cookie) {
             promptAndSaveSecurityCookie()
