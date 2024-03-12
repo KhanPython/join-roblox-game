@@ -48,22 +48,14 @@ async function getSecurityCookie(context) {
 }
 
 async function promptAndSaveSecurityCookie(context) {
-    const secrets = context.secrets;
-
-    let userToken = await secrets.get(SECURITY_COOKE_STRING);
-    if (!userToken) {
-        userToken = await vscode.window.showInputBox({ title: 'Enter your Roblox security cookie', password: true });
-    }
-    console.log("User token", userToken);
-
-
     const cookie = await vscode.window.showInputBox({
         prompt: 'Enter your security cookie',
         password: true // Conceals the input
     });
+    console.log("User token", cookie);
 
     if (cookie) {
-        await saveSecurityCookie(cookie);
+        await saveSecurityCookie(context, cookie);
     }
 }
 
