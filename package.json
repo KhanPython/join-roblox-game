@@ -23,11 +23,11 @@
     "commands": [
       {
         "command": "join-roblox-game.joinGame",
-        "title": "Join Game"
+        "title": "Roblox: Join Game"
       },
       {
         "command": "join-roblox-game.createPlaceJSON",
-        "title": "Create `place.json`"
+        "title": "Roblox: Create `place.json`"
       }
     ],
     "configuration": {
@@ -39,7 +39,13 @@
           "description": "Automatically adds `place.json` to `.gitignore`"
         }
       }
-    }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "/place.json",
+        "url": "./schemas/place-schema.json"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
