@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "Place Configuration",
+    "required": ["placeId", "cookie"],
+    "properties": {
+      "placeId": {
+        "type": "string",
+        "description": "The unique identifier for the place"
+      },
+      "cookie": {
+        "type": "string",
+        "description": "A secret cookie for authentication purposes"
+      }
+    }
+}
