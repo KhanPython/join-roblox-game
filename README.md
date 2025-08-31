@@ -1,6 +1,6 @@
 # Join-Roblox-Game Extension for VSCode
 
-Speed up your live-experience testing with the **Join-Roblox-Game** extension for Visual Studio Code. This tool enables you to directly link your workspace with a Roblox game, offering a streamlined path to jump from code to gameplay within a single click.
+This tool enables you to directly link your workspace with a Roblox game, offering a streamlined path to jump from code to gameplay within a single click.
 
 
 ## Quick Setup
